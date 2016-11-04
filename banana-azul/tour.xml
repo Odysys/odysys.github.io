@@ -1,0 +1,438 @@
+<krpano version="1.0.8.14" onstart="startup();">
+	<!-- 
+		
+		Banana Azul October 2012
+		
+		vtour.xml template krpano tools version 1.0.8.14 
+	
+	-->
+
+	<!-- include zoom and fullscreen buttons -->
+	<include url="skin/androidskin.xml" devices="android" />
+	<include url="skin/defaultskin.xml" devices="flash" />
+
+	<action name="startup">
+		<!-- load the first scene -->
+		loadscene(get(scene[0].name), null, MERGE);
+
+		<!-- build thumbnails when there is more than one scene (remove the line below to remove the thumbnails) -->
+		if(scene.count GT 1, buildthumbs(); );
+		
+		<!-- controls instruction image set in middle floor scene to only appear once -->
+		if(plugin[only1time].onlyonce == 0, set(plugin[introimage].visible, true)); 
+		
+	</action>
+
+
+	<!-- Progress bar -->
+	<progress showload="bar()" showwait="loopings(0xFFFFFF)" />
+
+
+	<!-- hotspot styles (for Flash and HTML5) -->
+	<style name="hotspot_ani_black"
+	       url="hotspots/hotspot_ani_black_64x64x20.png"
+	       crop="0|0|64|64"
+	       framewidth="64" frameheight="64" frame="0" lastframe="19"
+	       onloaded="hotspot_animate();"
+	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
+	       />
+
+	<style name="hotspot_ani_white"
+	       url="hotspots/hotspot_ani_white_64x64x20.png"
+	       crop="0|0|64|64"
+	       framewidth="64" frameheight="64" frame="0" lastframe="19"
+	       onloaded="hotspot_animate();"
+	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
+	       />
+
+	<action name="hotspot_animate">
+		inc(frame,1,get(lastframe),0);
+		mul(ypos,frame,frameheight);
+		txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight));
+		delayedcall(0.03, if(loaded, hotspot_animate() ) );
+	</action>
+	
+	<scene name="scene_garden" title="garden" onstart="" thumburl="panos/garden.tiles/thumb.jpg">
+
+		<view hlookat="35" vlookat="0" fovtype="MFOV" fov="115" maxpixelzoom="2.0" fovmin="60" fovmax="120" limitview="auto" />
+
+		<preview url="panos/garden.tiles/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="723" progressive="false">
+			<level tiledimagewidth="2531" tiledimageheight="2531">
+				<cube url="panos/garden.tiles/l2_%s_%0v%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1266" tiledimageheight="1266">
+				<cube url="panos/garden.tiles/l1_%s_%0v%0h.jpg" />
+			</level>
+			<mobile>
+				<cube url="panos/garden.tiles/mobile_%s.jpg" />
+			</mobile>
+			<tablet>
+				<cube url="panos/garden.tiles/tablet_%s.jpg" />
+			</tablet>
+		</image>
+
+		<hotspot name="spot-pool" style="hotspot_ani_white" 
+		         ath="30"
+		         atv="0"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_pool',null,MERGE,BLEND(1));"
+		         />
+		
+		<hotspot name="spot-beach" style="hotspot_ani_white" 
+		         ath="180"
+		         atv="0"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_beach',null,MERGE,BLEND(1));"
+		         />
+				 
+		<hotspot name="spot-apartment" style="hotspot_ani_white" 
+		         ath="45"
+		         atv="354"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_apartment',null,MERGE,BLEND(1));"
+		         />
+				 
+		<hotspot name="spot-ocean" style="hotspot_ani_white" 
+		         ath="310"
+		         atv="305"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_ocean',null,MERGE,BLEND(1));"
+		         />
+		
+		<!-- Intro image -->
+		<plugin name="only1time"
+			onlyonce="0"
+		/>
+		
+		<plugin name="introimage"
+			visible="false"
+			url="images/introimage.png"
+			align="center"
+			onloaded="set(alpha,0); tween(alpha,1.0);"
+			onclick="hideintroimage();"
+		/>
+		
+		<plugin name="watermark" 
+			url="images/garden.png" 
+			keep="false" 
+			blendmode="normal" 
+			width="304" 
+			height="92" 
+			align="rightbottom" 
+			onclick="js(mypopup(http://mattock.com,500,530);)"
+			/>
+		
+		<action name="hideintroimage">
+			set(plugin[only1time].onlyonce, 1);
+			if(plugin[introimage].enabled,
+				set(plugin[introimage].enabled,false);
+				tween(plugin[introimage].alpha, 0.0, 1.0, default, removeplugin(introimage)););
+		</action>	
+
+	</scene>
+	
+	<scene name="scene_ocean" title="ocean" onstart="" thumburl="panos/ocean.tiles/thumb.jpg">
+
+		<view hlookat="225" vlookat="15" fovtype="MFOV" fov="115" maxpixelzoom="2.0" fovmin="60" fovmax="120" limitview="auto" />
+
+		<preview url="panos/ocean.tiles/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="724" progressive="false">
+			<level tiledimagewidth="2534" tiledimageheight="2534">
+				<cube url="panos/ocean.tiles/l2_%s_%0v%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1267" tiledimageheight="1267">
+				<cube url="panos/ocean.tiles/l1_%s_%0v%0h.jpg" />
+			</level>
+			<mobile>
+				<cube url="panos/ocean.tiles/mobile_%s.jpg" />
+			</mobile>
+			<tablet>
+				<cube url="panos/ocean.tiles/tablet_%s.jpg" />
+			</tablet>
+		</image>
+
+		<hotspot name="spot-garden" style="hotspot_ani_white" 
+		         ath="230"
+		         atv="50"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_garden',null,MERGE,BLEND(1));"
+		         />
+				 
+		<hotspot name="spot-beach" style="hotspot_ani_white" 
+		         ath="267"
+		         atv="4"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_beach',null,MERGE,BLEND(1));"
+		         />
+				 
+		<hotspot name="spot-pool" style="hotspot_ani_white" 
+		         ath="131"
+		         atv="14"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_pool',null,MERGE,BLEND(1));"
+		         />
+				 
+		<hotspot name="spot-apartment" style="hotspot_ani_white" 
+		         ath="131"
+		         atv="0"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_apartment',null,MERGE,BLEND(1));"
+		         />
+				 
+		<plugin name="watermark" 
+				url="images/howler.png" 
+				keep="false" 
+				blendmode="normal" 
+				width="304" 
+				height="92" 
+				align="rightbottom" 
+				onclick="openurl(http://www.bananaazul.com/rates.php,_blank);"
+				/>
+
+	</scene>
+	
+	
+	<scene name="scene_apartment" title="apartment" onstart="" thumburl="panos/apartment.tiles/thumb.jpg">
+
+		<view hlookat="40" vlookat="0" fovtype="MFOV" fov="115" maxpixelzoom="2.0" fovmin="60" fovmax="130" limitview="auto" />
+
+		<preview url="panos/apartment.tiles/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="851" progressive="false">
+			<level tiledimagewidth="2553" tiledimageheight="2553">
+				<cube url="panos/apartment.tiles/l2_%s_%0v%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1277" tiledimageheight="1277">
+				<cube url="panos/apartment.tiles/l1_%s_%0v%0h.jpg" />
+			</level>
+			<mobile>
+				<cube url="panos/apartment.tiles/mobile_%s.jpg" />
+			</mobile>
+			<tablet>
+				<cube url="panos/apartment.tiles/tablet_%s.jpg" />
+			</tablet>
+		</image>
+
+		<hotspot name="spot-garden" style="hotspot_ani_black" 
+		         ath="340"
+		         atv="10"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_garden',null,MERGE,BLEND(1));"
+		         />
+				 
+		<plugin name="watermark" 
+				url="images/apartment.png" 
+				keep="false" 
+				blendmode="normal" 
+				width="304" 
+				height="92" 
+				align="rightbottom" 
+				onclick="openurl(http://www.bananaazul.com/rates.php,_blank);"
+				/>
+
+	</scene>
+	
+	
+	<scene name="scene_beach" title="beach" onstart="" thumburl="panos/beach.tiles/thumb.jpg">
+
+		<view hlookat="30" vlookat="0" fovtype="MFOV" fov="115" maxpixelzoom="2.0" fovmin="60" fovmax="120" limitview="auto" />
+
+		<preview url="panos/beach.tiles/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="730" progressive="false">
+			<level tiledimagewidth="2554" tiledimageheight="2554">
+				<cube url="panos/beach.tiles/l2_%s_%0v%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1277" tiledimageheight="1277">
+				<cube url="panos/beach.tiles/l1_%s_%0v%0h.jpg" />
+			</level>
+			<mobile>
+				<cube url="panos/beach.tiles/mobile_%s.jpg" />
+			</mobile>
+			<tablet>
+				<cube url="panos/beach.tiles/tablet_%s.jpg" />
+			</tablet>
+		</image>
+
+		<hotspot name="spot-garden" style="hotspot_ani_white" 
+		         ath="75"
+		         atv="0"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_garden',null,MERGE,BLEND(1));"
+		         />
+				 
+		<plugin name="watermark" 
+				url="images/beach.png" 
+				keep="false" 
+				blendmode="normal" 
+				width="304" 
+				height="92" 
+				align="rightbottom" 
+				onclick="openurl(http://www.bananaazul.com/rates.php,_blank);"
+				/>
+	
+	</scene>
+	
+	<scene name="scene_pool" title="pool" onstart="" thumburl="panos/pool.tiles/thumb.jpg">
+
+		<view hlookat="305" vlookat="0" fovtype="MFOV" fov="115" maxpixelzoom="2.0" fovmin="60" fovmax="120" limitview="auto" />
+
+		<preview url="panos/pool.tiles/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="843" progressive="false">
+			<level tiledimagewidth="2529" tiledimageheight="2529">
+				<cube url="panos/pool.tiles/l2_%s_%0v%0h.jpg" />
+			</level>
+			<level tiledimagewidth="1265" tiledimageheight="1265">
+				<cube url="panos/pool.tiles/l1_%s_%0v%0h.jpg" />
+			</level>
+			<mobile>
+				<cube url="panos/pool.tiles/mobile_%s.jpg" />
+			</mobile>
+			<tablet>
+				<cube url="panos/pool.tiles/tablet_%s.jpg" />
+			</tablet>
+		</image>
+
+		<hotspot name="spot-garden" style="hotspot_ani_white" 
+		         ath="0"
+		         atv="6"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_garden',null,MERGE,BLEND(1));"
+		         />
+				 
+		<hotspot name="spot-beach" style="hotspot_ani_white" 
+		         ath="345"
+		         atv="0"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_beach',null,MERGE,BLEND(1));"
+		         />
+				 
+		<hotspot name="spot-ocean" style="hotspot_ani_white" 
+		         ath="10"
+		         atv="348"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_ocean',null,MERGE,BLEND(1));"
+		         />
+				 
+		<hotspot name="spot-apartment" style="hotspot_ani_white" 
+		         ath="190"
+		         atv="355"
+		         zoom="false"
+		         onclick="looktohotspot(get(name)); loadscene('scene_apartment',null,MERGE,BLEND(1));"
+		         />
+				 
+		<plugin name="watermark" 
+				url="images/pool.png" 
+				keep="false" 
+				blendmode="normal" 
+				width="304" 
+				height="92" 
+				align="rightbottom" 
+				onclick="openurl(http://www.bananaazul.com/rates.php,_blank);"
+				/>
+
+	</scene>
+
+
+	<!-- thumbnail actions begin (remove the 'buildthumbs()' call in the onstart event to remove the thumbs) -->
+	<action name="buildthumbs">
+		if(%1 != NEXT, set(i,0));
+		if(i LT scene.count,
+			copy(thumb, scene[get(i)].thumburl);
+			txtadd(thumbname,'thumb_',get(i));
+			addplugin(get(thumbname));
+			set(plugin[get(thumbname)].url, get(thumb));
+			set(plugin[get(thumbname)].keep, true);
+			set(plugin[get(thumbname)].align, leftbottom);
+			set(plugin[get(thumbname)].width,  40);
+			set(plugin[get(thumbname)].height, 40);
+			mul(plugin[get(thumbname)].x, i,3);
+			mul(plugin[get(thumbname)].y, i,3);
+			add(plugin[get(thumbname)].x, 5);
+			add(plugin[get(thumbname)].y, 5);
+			copy(plugin[get(thumbname)].xsmall, plugin[get(thumbname)].x);
+			copy(plugin[get(thumbname)].ysmall, plugin[get(thumbname)].y);
+			add(plugin[get(thumbname)].zorder, 100, i);
+			set(plugin[get(thumbname)].effect, glow(0xFFFFFF,1.0,2,10000));
+			set(plugin[get(thumbname)].jsborder, '1px solid #FFFFFF');
+			copy(plugin[get(thumbname)].thumbpos, i);
+			set(plugin[get(thumbname)].linkedscene, get(scene[get(i)].name) );
+			set(plugin[get(thumbname)].onclick, openthumbs() );
+			inc(i);
+			buildthumbs(NEXT);
+		  );
+	</action>
+
+	<action name="openthumb">
+		if(%2 != NEXT,
+			set(pos,0);
+			copy(curpos, plugin[%1].thumbpos);
+			set(xdst, 0);
+			set(ydst, 0);
+		  );
+
+		if(pos LT curpos,
+			inc(pos);
+			inc(ydst,90);
+			sub(ymax, stageheight, 100);
+			if(ydst GT ymax, inc(xdst,90);set(ydst,0); );
+			openthumb(%1,NEXT);
+		  ,
+			add(xdst,10);
+			add(ydst,10);
+			tween(plugin[%1].x, get(xdst) );
+			tween(plugin[%1].y, get(ydst) );
+			tween(plugin[%1].width, 80);
+			tween(plugin[%1].height, 80);
+		  );
+	</action>
+
+	<action name="closethumb">
+		tween(plugin[%1].x, get(plugin[%1].xsmall));
+		tween(plugin[%1].y, get(plugin[%1].ysmall));
+		tween(plugin[%1].width, 40);
+		tween(plugin[%1].height, 40);
+	</action>
+
+	<action name="openthumbs">
+		if(%1 != NEXT,
+			set(i,0);
+			set(events.onclick, set(events.onclick,null); delayedcall(0.1, closethumbs() ); );
+		  );
+
+		if(i LT scene.count,
+			txtadd(thumbname,'thumb_',get(i));
+			openthumb(get(thumbname));
+			set(plugin[get(thumbname)].onclick, set(events.onclick,null); closethumbs(); loadscene(get(linkedscene),null,MERGE,BLEND(1)); );
+			inc(i);
+			openthumbs(NEXT);
+		  );
+	</action>
+
+	<action name="closethumbs">
+		if(%1 != NEXT, set(i,0));
+		if(i LT scene.count,
+			txtadd(thumbname,'thumb_',get(i));
+			closethumb(get(thumbname));
+			set(plugin[get(thumbname)].onclick, openthumbs() );
+			inc(i);
+			closethumbs(NEXT);
+		  );
+	</action>
+	<!-- thumbnail actions end -->
+
+	<!-- Gyroscope plugin - http://krpano.com/plugins/userplugins/fieldofview/gyro/ -->
+	<plugin name="gyro" devices="html5"
+        url="plugins/gyro.js" 
+        keep="true"
+        enabled="true"
+        camroll="true"
+        friction="0.5"
+        velastic="0.2"
+   	/>
+	
+</krpano>
